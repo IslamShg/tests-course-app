@@ -6,13 +6,12 @@ env:
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,26 +19,22 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install dependencies 📦
-      #Using npm ci is generally faster than running npm install
-      run: |
-        cd tests-course-app
-        npm ci
-    - name: Build the app 🏗
-      run: |
-        cd tests-course-app
-        npm run build
-    - name: Run component tests 🔸
-      run: |
-        cd tests-course-app
-        npm run test
-    - name: Start the app 📤
-      run: |
-        cd tests-course-app
-        npm start &
-        npx wait-on --timeout 60000
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies 📦
+        #Using npm ci is generally faster than running npm install
+        run: |
+          npm ci
+      - name: Build the app 🏗
+        run: |
+          npm run build
+      - name: Run component tests 🔸
+        run: |
+          npm run test
+      - name: Start the app 📤
+        run: |
+          npm start &
+          npx wait-on --timeout 60000
